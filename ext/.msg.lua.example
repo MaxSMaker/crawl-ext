@@ -1,0 +1,2 @@
+EXT.events["EVENT_ID"] = "EVENT_TYPE"
+EXT.events["EVENT_ID_2"] = "EVENT_TYPE - optional event description"
