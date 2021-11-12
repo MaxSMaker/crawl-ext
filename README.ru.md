@@ -58,6 +58,25 @@ PATH_TO_EXT_LUA=
 go run csv-bot/main.go https://docs.google.com/spreadsheets/d/$DOC_ID/export?format=csv > $PATH_TO_EXT_LUA/.msg.lua
 ```
 
+### Бот twitch-чата
+
+Данный бот позволяет передавать команды из чата twitch.
+
+Бот читает чат, находит команды, начинающиеся с "!" и передает команду, следующую за "!" в игру.
+Вывод бота надо перенаправить в LUA-файл событий средствами ОС. Файл событий - `crawl-ref/source/dat/.msg.lua`.
+
+Бот написан на NodeJS, так что необходимо предварительно установить NodeJS.
+
+Пример команды запуска бота:
+
+```bash
+#!/bin/bash
+
+USER_ID=
+PATH_TO_EXT_LUA=
+node bot.js $USER_ID > $PATH_TO_EXT_LUA/.msg.lua
+```
+
 ## Доступные эффекты
 
 * HEAL - восстановить здоровье

@@ -1,0 +1,13 @@
+{
+  "name": "twitch-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.js",
+  "scripts": {
+  },
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "tmi.js": "^1.8.5"
+  }
+}
