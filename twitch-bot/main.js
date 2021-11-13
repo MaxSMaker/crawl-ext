@@ -3,7 +3,7 @@ const bot = require('./bot.js');
 
 const args = process.argv.slice(2)
 const client = new tmi.Client({
-	channels: args
+    channels: args
 });
 
 client.connect();
