@@ -2,7 +2,7 @@ local esc = string.char(27)
 local eol = string.char(13)
 
 EXT.effects.HEAL = function()
-    crawl.sendkeys("&h")
+    crawl.sendkeys("&H")
 end
 
 EXT.effects.MONEY = function()
@@ -48,6 +48,13 @@ end
 
 EXT.effects.KILL_ALL = function()
     crawl.sendkeys("&G")
+end
+
+EXT.effects.PRINT = function()
+    local inv = items.inventory()
+    for index, value in ipairs(inv) do
+        crawl.mpr(value.inscription)
+    end
 end
 
 -- EXT.effects.DIE = function()
