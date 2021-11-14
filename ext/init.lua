@@ -28,9 +28,8 @@ function ProcessExt()
 
     for key, value in pairs(EXT.events) do
         if EXT.events_processed[key] == nil then
-            local evType = value:match("(%w+)(.*)")
-            if EXT.effects[evType] then
-                EXT.effects[evType]()
+            if EXT.effects[value] then
+                EXT.effects[value]()
             end
         end
     end

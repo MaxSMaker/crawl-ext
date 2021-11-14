@@ -1,5 +1,5 @@
 var eventIndex = 0;
-var regex = /^[A-Z]+$/
+var regex = /^[A-Z_]+$/
 
 module.exports.message = function (channel, tags, message, self) {
     // console.log(`${tags['display-name']}: ${message}`);

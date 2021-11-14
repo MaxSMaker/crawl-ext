@@ -1,3 +1,6 @@
+local esc = string.char(27)
+local eol = string.char(13)
+
 if EXT.lifes_init == nil then
     EXT.lifes_init = true
     if EXT_LIFES == nil then
@@ -10,6 +13,12 @@ if EXT.lifes_init == nil then
         if prompt == "Die?" then
             EXT_LIFES = EXT_LIFES - 1
             crawl.mpr("You are dead... Lifes: " .. EXT_LIFES)
+            if EXT_LIFES == 0 then
+                return true
+            end
+
+            EXT.events_processed["RESET"] = nil
+            EXT.events["RESET"] = "INNER_DISPERSAL"
             return EXT_LIFES == 0
         end
 
@@ -35,4 +44,8 @@ end
 EXT.effects.EXTRA_LIFE = function()
     EXT_LIFES = EXT_LIFES + 1
     crawl.mpr("Extra life: " .. EXT_LIFES)
+end
+
+EXT.effects.INNER_DISPERSAL= function()
+    crawl.sendkeys("&zDispersal" .. eol)
 end

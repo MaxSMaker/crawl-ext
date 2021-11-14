@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -36,12 +37,20 @@ func process(url string, data map[string]bool) (map[string]bool, error) {
 		return data, err
 	}
 	newData := make(map[string]bool)
+	re := regexp.MustCompile(`^[A-Z_]+$`)
 
 	for _, v := range s {
 		_, ok := data[v]
 		if !ok {
 			args := strings.Split(v, ",")
-			fmt.Printf("EXT.events[\"%s\"] = \"%s\"\n", v, args[1])
+			if len(args) > 1 {
+				event := strings.Split(args[1], " ")
+				if len(event) > 0 {
+					if re.MatchString(event[0]) {
+						fmt.Printf("EXT.events[\"%s\"] = \"%s\"\n", v, event)
+					}
+				}
+			}
 		}
 		newData[v] = true
 	}
