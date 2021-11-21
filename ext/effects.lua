@@ -6,20 +6,28 @@ EXT.effects.HEAL = function()
 end
 
 EXT.effects.MONEY = function()
-    crawl.sendkeys("&o$1000" .. eol)
+    local gold = you.gold() + 1000
+    crawl.sendkeys("&$" .. gold .. eol)
+end
+
+EXT.effects.NO_MONEY = function()
+    local gold = you.gold() - 1000
+    if gold < 0 then
+        gold = 0
+    end
+    crawl.sendkeys("&$" .. gold .. eol)
 end
 
 EXT.effects.ACQUIREMENT = function()
     crawl.sendkeys("&%scroll of acquirement" .. eol)
-    -- crawl.sendkeys("&a")
 end
 
 EXT.effects.XOM = function()
     crawl.sendkeys("&X" .. eol)
 end
 
-EXT.effects.MAP = function()
-    crawl.sendkeys("&{")
+EXT.effects.EXPLORE = function()
+    crawl.sendkeys("&{&D")
 end
 
 EXT.effects.IDENTIFY = function()
@@ -42,22 +50,14 @@ EXT.effects.RELEVEL = function()
     crawl.sendkeys("&*r")
 end
 
-EXT.effects.DETECT = function()
-    crawl.sendkeys("&D")
+EXT.effects.BLINK = function()
+    crawl.sendkeys("&zBlink" .. eol)
 end
 
 EXT.effects.KILL_ALL = function()
     crawl.sendkeys("&G")
 end
 
-EXT.effects.PRINT = function()
-    local inv = items.inventory()
-    for index, value in ipairs(inv) do
-        crawl.mpr(value.inscription)
-    end
+EXT.effects.MUTATION = function()
+    crawl.sendkeys("&]any" .. eol)
 end
-
--- EXT.effects.DIE = function()
---     crawl.mpr("You are dead... Nothing personal, it's just business.")
---     crawl.sendkeys("*Qyes" .. eol)
--- end
