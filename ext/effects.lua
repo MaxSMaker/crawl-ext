@@ -61,3 +61,5 @@ end
 EXT.effects.MUTATION = function()
     crawl.sendkeys("&]any" .. eol)
 end
+
+//test
