@@ -62,4 +62,6 @@ EXT.effects.MUTATION = function()
     crawl.sendkeys("&]any" .. eol)
 end
 
-//test
+EXT.effects.MUT_CLEAR = function()
+    crawl.call_dlua("you.delete_all_mutations(\"ext\");");
+end

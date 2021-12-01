@@ -74,7 +74,7 @@ go run csv-bot/main.go https://docs.google.com/spreadsheets/d/$DOC_ID/export?for
 
 USER_ID=
 PATH_TO_EXT_LUA=
-node bot.js $USER_ID > $PATH_TO_EXT_LUA/.msg.lua
+node main.js $USER_ID > $PATH_TO_EXT_LUA/.msg.lua
 ```
 
 ## Доступные эффекты
@@ -94,3 +94,5 @@ node bot.js $USER_ID > $PATH_TO_EXT_LUA/.msg.lua
 * RELEVEL - сгенерировать заново текущий уровень
 * BLINK - переместиться на случайную позицию в зоне видимости.
 * KILL_ALL - убрать всех монстров на уровне
+* MUTATION - наложение случайной мутации
+* MUT_CLEAR - очистка всех мутаций
