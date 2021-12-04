@@ -32,11 +32,12 @@ export class GameEventProcessor implements IGameEvent {
     this.messageEmitter.emit("log", msg);
   }
 
-  private onMessage(body: string, id?: string, from?: string) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private onMessage(body: string, id?: string, _from?: string) {
     const msg = this.escape(body.toUpperCase());
     const index = this.escape(id || "ID_" + this.evIndex++);
-    const sender = this.escape(from || "");
-    console.log(`EXT.events["${index}"] = "${msg}" -- ${sender}`);
+
+    console.log(`EXT.events["${index}"] = "${msg}"`);
   }
 
   private onLog(msg: string) {
