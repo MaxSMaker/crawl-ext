@@ -50,7 +50,7 @@ export class GameEventProcessor implements IGameEvent {
   }
 }
 
-export class VoteEventProcessorWrapper implements IGameEvent {
+export class VoteRandomEventProcessorWrapper implements IGameEvent {
   private events: Array<string> = [];
   private voteRound = 0;
 
