@@ -1,0 +1,35 @@
+{
+  "name": "ts_sandbox",
+  "version": "1.0.0",
+  "description": "",
+  "main": "out/app.js",
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^7.32.0",
+    "jest": "^27.3.1",
+    "prettier": "2.5.0",
+    "ts-jest": "^27.0.7",
+    "ts-node": "^10.4.0",
+    "typed-emitter": "^1.4.0",
+    "typescript": "^4.5.2"
+  },
+  "scripts": {
+    "start": "tsc && node out/app.js",
+    "compile": "tsc",
+    "test": "jest",
+    "watch": "tsc --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/tmi.js": "^1.8.1",
+    "csv-string": "^4.0.1",
+    "dotenv": "^10.0.0",
+    "node-fetch": "^3.1.0",
+    "tmi.js": "^1.8.5"
+  },
+  "type": "module"
+}
