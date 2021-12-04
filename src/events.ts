@@ -1,6 +1,10 @@
 import EventEmitter from "events";
 import TypedEmitter from "typed-emitter";
 
+export interface FileWriter {
+  (msg: string): void;
+}
+
 interface MessageEvents {
   message: (body: string, from: string) => void;
   log: (msg: string) => void;
@@ -15,7 +19,7 @@ export class GameEventProcessor implements IGameEvent {
   private evIndex = 0;
   private messageEmitter = new EventEmitter() as TypedEmitter<MessageEvents>;
 
-  constructor() {
+  constructor(private write: FileWriter) {
     this.messageEmitter.on(
       "message",
       (type: string, id?: string, from?: string) =>
@@ -37,12 +41,12 @@ export class GameEventProcessor implements IGameEvent {
     const msg = this.escape(body.toUpperCase());
     const index = this.escape(id || "ID_" + this.evIndex++);
 
-    console.log(`EXT.events["${index}"] = "${msg}"`);
+    this.write(`EXT.events["${index}"] = "${msg}"`);
   }
 
   private onLog(msg: string) {
     const value = this.escape(msg);
-    console.log(`-- ${this.escape(value)}`);
+    this.write(`-- ${this.escape(value)}`);
   }
 
   private escape(str: string): string {

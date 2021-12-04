@@ -1,11 +1,29 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import { GameEventProcessor, RandomEventProcessorWrapper } from "./events.js";
+import fs from "fs";
+
+import {
+  FileWriter,
+  GameEventProcessor,
+  RandomEventProcessorWrapper,
+} from "./events.js";
 import { TwitchBot } from "./twitchBot.js";
 import { CsvBot } from "./cvsBot.js";
 
-const processor = new GameEventProcessor();
+let writer: FileWriter = (msg) => console.log(msg);
+if (process.env.LUA_MSG_FILE) {
+  const file = process.env.LUA_MSG_FILE;
+  // Clear output file
+  fs.writeFileSync(file, "");
+
+  writer = (msg) => {
+    console.log(msg);
+    fs.writeFileSync(file, msg + "\n", { flag: "a" });
+  };
+}
+
+const processor = new GameEventProcessor(writer);
 
 if (process.env.TWITCH_CHANNEL) {
   const voteProcessor = new RandomEventProcessorWrapper(processor, 60000);
