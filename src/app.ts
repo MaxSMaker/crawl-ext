@@ -1,14 +1,19 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import { GameEventProcessor } from "./events.js";
+import { GameEventProcessor, VoteEventProcessorWrapper } from "./events.js";
 import { TwitchBot } from "./twitchBot.js";
 import { CsvBot } from "./cvsBot.js";
 
 const processor = new GameEventProcessor();
 
 if (process.env.TWITCH_CHANNEL) {
-  const twitchBot = new TwitchBot(processor, process.env.TWITCH_CHANNEL);
+  const voteProcessor = new VoteEventProcessorWrapper(processor, 60000);
+  const twitchBot = new TwitchBot(
+    voteProcessor,
+    process.env.TWITCH_CHANNEL,
+    true
+  );
   twitchBot.connect();
 }
 

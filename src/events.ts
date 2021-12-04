@@ -49,3 +49,34 @@ export class GameEventProcessor implements IGameEvent {
     return str.replace("\n", "").replace("\r", "");
   }
 }
+
+export class VoteEventProcessorWrapper implements IGameEvent {
+  private events: Array<string> = [];
+  private voteRound = 0;
+
+  constructor(private processor: IGameEvent, periodInMs: number) {
+    setInterval(() => this.tick(), periodInMs);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  emit(type: string, _id?: string, _from?: string): void {
+    this.events.push(type);
+  }
+
+  log(msg: string): void {
+    this.processor.log(msg);
+  }
+
+  private tick() {
+    if (this.events.length == 0) {
+      return;
+    }
+
+    const copy = this.events;
+    this.events = [];
+
+    const index = Math.floor(Math.random() * copy.length);
+    const msg = copy[index];
+    this.processor.emit(msg, "V_" + this.voteRound++);
+  }
+}
