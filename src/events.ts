@@ -1,5 +1,6 @@
 import EventEmitter from "events";
 import TypedEmitter from "typed-emitter";
+import fs from "fs";
 
 export interface FileWriter {
   (msg: string): void;
@@ -18,14 +19,21 @@ export interface IGameEvent {
 export class GameEventProcessor implements IGameEvent {
   private evIndex = 0;
   private messageEmitter = new EventEmitter() as TypedEmitter<MessageEvents>;
+  private writer: FileWriter = (msg) => console.log(msg);
 
-  constructor(private write: FileWriter) {
+  constructor() {
     this.messageEmitter.on(
       "message",
       (type: string, id?: string, from?: string) =>
         this.onMessage(type, id, from)
     );
     this.messageEmitter.on("log", (msg: string) => this.onLog(msg));
+  }
+
+  setOutFile(fileName: string) {
+    fs.writeFileSync(fileName, ""); // Clear output file
+    this.writer = (msg) =>
+      fs.writeFileSync(fileName, msg + "\n", { flag: "a" });
   }
 
   emit(type: string, from: string): void {
@@ -41,12 +49,12 @@ export class GameEventProcessor implements IGameEvent {
     const msg = this.escape(body.toUpperCase());
     const index = this.escape(id || "ID_" + this.evIndex++);
 
-    this.write(`EXT.events["${index}"] = "${msg}"`);
+    this.writer(`EXT.events["${index}"] = "${msg}"`);
   }
 
   private onLog(msg: string) {
     const value = this.escape(msg);
-    this.write(`-- ${this.escape(value)}`);
+    this.writer(`-- ${this.escape(value)}`);
   }
 
   private escape(str: string): string {
