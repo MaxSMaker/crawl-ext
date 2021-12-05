@@ -2,7 +2,7 @@ import EventEmitter from "events";
 import TypedEmitter from "typed-emitter";
 import fs from "fs";
 
-export interface FileWriter {
+export interface EventWriter {
   (msg: string): void;
 }
 
@@ -19,7 +19,7 @@ export interface IGameEvent {
 export class GameEventProcessor implements IGameEvent {
   private evIndex = 0;
   private messageEmitter = new EventEmitter() as TypedEmitter<MessageEvents>;
-  private writer: FileWriter = (msg) => console.log(msg);
+  private writer: EventWriter = (msg) => console.log(msg);
 
   constructor() {
     this.messageEmitter.on(
@@ -32,8 +32,10 @@ export class GameEventProcessor implements IGameEvent {
 
   setOutFile(fileName: string) {
     fs.writeFileSync(fileName, ""); // Clear output file
-    this.writer = (msg) =>
+    this.writer = (msg) => {
+      console.log(msg);
       fs.writeFileSync(fileName, msg + "\n", { flag: "a" });
+    };
   }
 
   emit(type: string, from: string): void {
