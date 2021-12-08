@@ -71,7 +71,6 @@ EXT.effects.MUTATION = function()
 end
 
 EXT.effects.MUT_CLEAR = function()
-<<<<<<< HEAD
     crawl.call_dlua("you.delete_all_mutations(\"ext\");")
 end
 
@@ -134,8 +133,3 @@ end
 EXT.effects.BERSERK = function()
     crawl.sendkeys("&*dberserk" .. eol .. 100 .. eol)
 end
-
-=======
-    crawl.call_dlua("you.delete_all_mutations(\"ext\");");
-end
->>>>>>> 49d774561d04689e35bf11666211bbf11083172e
