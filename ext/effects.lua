@@ -6,13 +6,11 @@ EXT.effects.HEAL = function()
     crawl.sendkeys("&H")
 end
 --]]
-
 --[[
 EXT.effects.XOM = function()
     crawl.sendkeys("&X" .. eol)
 end
 --]]
-
 --[[
 EXT.effects.KNOWLEDGE = function()
     crawl.sendkeys("&y")
@@ -22,13 +20,11 @@ EXT.effects.UNKNOWLEDGE = function()
     crawl.sendkeys("&Y")
 end
  --]]
-
 --[[
 EXT.effects.KILL_ALL = function()
     crawl.sendkeys("&G")
 end
 --]]
-
 EXT.effects.MONEY = function()
     local gold = you.gold() + 1000
     crawl.sendkeys("&$" .. gold .. eol)
@@ -71,7 +67,7 @@ EXT.effects.MUTATION = function()
 end
 
 EXT.effects.MUT_CLEAR = function()
-    crawl.call_dlua("you.delete_all_mutations(\"ext\");")
+    crawl.call_dlua('you.delete_all_mutations("ext");')
 end
 
 EXT.effects.BANISH_YOURSELF = function()
@@ -79,7 +75,7 @@ EXT.effects.BANISH_YOURSELF = function()
 end
 
 EXT.effects.XOM_GIFT = function()
-    crawl.sendkeys("&Xgift".. eol)
+    crawl.sendkeys("&Xgift" .. eol)
 end
 
 EXT.effects.XOM_CONFUSE = function()

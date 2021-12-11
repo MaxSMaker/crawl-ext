@@ -46,6 +46,6 @@ EXT.effects.EXTRA_LIFE = function()
     crawl.mpr("Extra life: " .. EXT_LIFES)
 end
 
-EXT.effects.inner_DISPERSAL= function()
+EXT.effects.inner_DISPERSAL = function()
     crawl.sendkeys("&zDispersal" .. eol)
 end
