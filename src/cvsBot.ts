@@ -10,6 +10,7 @@ export class CsvBot {
 
   connect(): void {
     setInterval(() => this.tick(), 1000);
+    this.tick();
   }
 
   private tick(): void {
