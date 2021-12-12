@@ -26,7 +26,10 @@ function ProcessExt()
 
     dofile("ext/.msg.lua")
 
-    for key, value in pairs(EXT.events) do
+    local events = EXT.events
+    EXT.events = {}
+
+    for key, value in pairs(events) do
         if EXT.events_processed[key] == nil then
             if EXT.effects[value] then
                 EXT.effects[value]()
@@ -34,6 +37,5 @@ function ProcessExt()
         end
     end
 
-    EXT.events_processed = EXT.events
-    EXT.events = {}
+    EXT.events_processed = events
 end

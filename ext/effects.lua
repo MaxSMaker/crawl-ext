@@ -129,3 +129,19 @@ end
 EXT.effects.BERSERK = function()
     crawl.sendkeys("&*dberserk" .. eol .. 100 .. eol)
 end
+
+EXT.effects.TELE_TO_RANDOM_BRANCH = function()
+    -- (J) Abyss
+    -- (1) Bazaar
+    -- (2) Trove
+    -- (!) Gauntlet
+    local targets = {"J", "1", "2", "!"}
+    crawl.enable_more(false)
+    EXT.events_processed["enableMore"] = nil
+    EXT.events["enableMore"] = "enableMore"
+    crawl.sendkeys("&~" .. util.random_from(targets))
+end
+
+EXT.effects.enableMore = function()
+    crawl.enable_more(true)
+end

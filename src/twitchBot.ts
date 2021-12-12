@@ -38,11 +38,11 @@ export class TwitchBot {
       this.processor.log(`${userstate.username || "UNKNOWN"}: ${message}`);
     }
 
-    // if (!message.startsWith("!")) {
-    //   return;
-    // }
+    if (!message.startsWith("!")) {
+      return;
+    }
 
-    const event = message.slice(0).split(" ", 1).shift();
+    const event = message.slice(1).split(" ", 1).shift();
 
     if (!event || !this.regex.test(event)) {
       return;
