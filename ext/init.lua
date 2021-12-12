@@ -33,6 +33,7 @@ function ProcessExt()
         if EXT.events_processed[key] == nil then
             if EXT.effects[value] then
                 EXT.effects[value]()
+                crawl.more()
             end
         end
     end
