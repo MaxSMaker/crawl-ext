@@ -24,6 +24,10 @@ if (process.env.CSV_URL) {
 }
 
 if (process.env.DONATION_ALERTS_TOKEN) {
-  const alertsBot = new AlertsBot(processor, process.env.DONATION_ALERTS_TOKEN);
+  const alertsBot = new AlertsBot(
+    processor,
+    process.env.DONATION_ALERTS_TOKEN,
+    true
+  );
   alertsBot.connect();
 }

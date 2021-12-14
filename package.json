@@ -29,6 +29,7 @@
     "axios": "^0.24.0",
     "csv-string": "^4.0.1",
     "dotenv": "^10.0.0",
+    "node-html-parser": "^5.1.0",
     "tmi.js": "^1.8.5"
   },
   "type": "module"
