@@ -9,7 +9,7 @@ export class AlertsBot {
   constructor(
     private processor: IGameEvent,
     private token: string,
-    private debug: boolean
+    private debug: boolean = false
   ) {}
 
   connect(): void {
