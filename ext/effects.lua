@@ -145,3 +145,23 @@ end
 EXT.effects.enableMore = function()
     crawl.enable_more(true)
 end
+
+-- EXT.effects.DOUBLE_SCROLLS = function()
+--     for _, value in pairs(items.inventory()) do
+--         if value:class(true) == "Scrolls" then
+--             if value.fully_identified then
+--                 crawl.sendkeys("&%Scroll of " .. value:subtype() .. " q:" .. value.quantity .. eol)
+--             end
+--         end
+--     end
+-- end
+
+-- EXT.effects.DOUBLE_POTIONS = function()
+--     for _, value in pairs(items.inventory()) do
+--         if value:class(true) == "Potions" then
+--             if value.fully_identified then
+--                 crawl.sendkeys("&%Potion of " .. value:subtype() .. " q:" .. value.quantity .. eol)
+--             end
+--         end
+--     end
+-- end
