@@ -16,12 +16,14 @@ local SAVE_SCROLLS = function()
 end
 
 local LOAD_SCROLLS = function()
-    for _, value in pairs(c_persist.INHERITANCE) do
-        crawl.sendkeys(value)
+    if c_persist.INHERITANCE then
+        for _, value in pairs(c_persist.INHERITANCE) do
+            crawl.sendkeys(value)
+        end
+        c_persist.INHERITANCE = nil
+        crawl.sendkeys("g*" .. eol)
+        crawl.sendkeys("&i")
     end
-    c_persist.INHERITANCE = nil
-    crawl.sendkeys("g*" .. eol)
-    crawl.sendkeys("&i")
 end
 
 if EXT.lifes_init == nil then
