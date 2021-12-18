@@ -53,6 +53,7 @@ export class AlertsBot {
             }
           }
         }
-      });
+      })
+      .catch();
   }
 }
