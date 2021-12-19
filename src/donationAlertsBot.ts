@@ -54,6 +54,10 @@ export class AlertsBot {
           }
         }
       })
-      .catch();
+      .catch((err) => {
+        if (this.debug) {
+          console.log(err.name + ": " + err.message);
+        }
+      });
   }
 }
