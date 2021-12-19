@@ -15,6 +15,14 @@ if (process.env.LUA_MSG_FILE) {
   processor.setOutFile(process.env.LUA_MSG_FILE);
 }
 
+process.on("unhandledRejection", (reason, promise) => {
+  console.log("Unhandled Rejection at:", promise, "reason:", reason);
+});
+
+process.on("uncaughtException", (reason, promise) => {
+  console.log("Unhandled Exception at:", promise, "reason:", reason);
+});
+
 if (process.env.TWITCH_CHANNEL) {
   const voteProcessor = new RandomEventProcessorWrapper(processor, 60000);
   const twitchBot = new TwitchBot(
