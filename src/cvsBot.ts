@@ -9,12 +9,12 @@ export class CsvBot {
   constructor(
     private processor: IGameEvent,
     private url: string,
+    private refreshInterval: number,
     private debug: boolean
   ) {}
 
   connect(): void {
-    setTimeout(() => this.tick(), 1000);
-    this.tick();
+    setTimeout(() => this.tick(), 0);
   }
 
   private tick(): void {
@@ -43,6 +43,6 @@ export class CsvBot {
           console.log(err.name + ": " + err.message);
         }
       })
-      .finally(() => setTimeout(() => this.tick(), 1000));
+      .finally(() => setTimeout(() => this.tick(), this.refreshInterval));
   }
 }

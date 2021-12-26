@@ -11,6 +11,10 @@ const processor = new GameEventProcessor();
 
 const debug = process.env.BOT_DEBUG ? true : false;
 
+const refreshInterval = process.env.REFRESH_INTERVAL_MS
+  ? parseInt(process.env.REFRESH_INTERVAL_MS)
+  : 1000;
+
 if (process.env.LUA_MSG_FILE) {
   processor.setOutFile(process.env.LUA_MSG_FILE);
 }
@@ -34,7 +38,12 @@ if (process.env.TWITCH_CHANNEL) {
 }
 
 if (process.env.CSV_URL) {
-  const csvBot = new CsvBot(processor, process.env.CSV_URL, debug);
+  const csvBot = new CsvBot(
+    processor,
+    process.env.CSV_URL,
+    refreshInterval,
+    debug
+  );
   csvBot.connect();
 }
 
@@ -42,6 +51,7 @@ if (process.env.DONATION_ALERTS_TOKEN) {
   const alertsBot = new AlertsBot(
     processor,
     process.env.DONATION_ALERTS_TOKEN,
+    refreshInterval,
     debug
   );
   alertsBot.connect();

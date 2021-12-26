@@ -9,12 +9,12 @@ export class AlertsBot {
   constructor(
     private processor: IGameEvent,
     private token: string,
+    private refreshInterval: number,
     private debug: boolean = false
   ) {}
 
   connect(): void {
-    setTimeout(() => this.tick(), 1000);
-    this.tick();
+    setTimeout(() => this.tick(), 0);
   }
 
   private tick(): void {
@@ -59,6 +59,6 @@ export class AlertsBot {
           console.log(err.name + ": " + err.message);
         }
       })
-      .finally(() => setTimeout(() => this.tick(), 1000));
+      .finally(() => setTimeout(() => this.tick(), this.refreshInterval));
   }
 }
