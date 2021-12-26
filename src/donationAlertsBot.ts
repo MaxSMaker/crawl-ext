@@ -13,7 +13,7 @@ export class AlertsBot {
   ) {}
 
   connect(): void {
-    setInterval(() => this.tick(), 1000);
+    setTimeout(() => this.tick(), 1000);
     this.tick();
   }
 
@@ -58,6 +58,7 @@ export class AlertsBot {
         if (this.debug) {
           console.log(err.name + ": " + err.message);
         }
-      });
+      })
+      .finally(() => setTimeout(() => this.tick(), 1000));
   }
 }
