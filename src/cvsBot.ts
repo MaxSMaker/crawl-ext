@@ -1,5 +1,5 @@
 import { IGameEvent } from "./events.js";
-import axios from "axios";
+import fetch from "node-fetch";
 import csv from "csv-string";
 
 export class CsvBot {
@@ -18,9 +18,8 @@ export class CsvBot {
   }
 
   private tick(): void {
-    axios
-      .get<string>(this.url)
-      .then((response) => response.data)
+    fetch(this.url)
+      .then((response) => response.text())
       .then((body) => {
         const rows = csv.parse(body);
         rows.shift();

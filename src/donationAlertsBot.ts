@@ -1,5 +1,5 @@
 import { IGameEvent } from "./events.js";
-import axios from "axios";
+import fetch from "node-fetch";
 import { parse } from "node-html-parser";
 
 export class AlertsBot {
@@ -18,11 +18,10 @@ export class AlertsBot {
   }
 
   private tick(): void {
-    axios
-      .get<string>(
-        `https://www.donationalerts.com/widget/lastdonations?alert_type=1&limit=25&token=${this.token}`
-      )
-      .then((response) => response.data)
+    fetch(
+      `https://www.donationalerts.com/widget/lastdonations?alert_type=1&limit=25&token=${this.token}`
+    )
+      .then((response) => response.text())
       .then((body) => {
         const root = parse(body);
         const events = root.querySelectorAll(".event");
