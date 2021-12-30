@@ -6,6 +6,7 @@ import { TwitchBot } from "./twitchBot.js";
 import { CsvBot } from "./cvsBot.js";
 import { AlertsBot } from "./donationAlertsBot.js";
 import process from "process";
+import fs from "fs";
 
 const processor = new GameEventProcessor();
 
@@ -47,11 +48,17 @@ if (process.env.CSV_URL) {
   csvBot.connect();
 }
 
-if (process.env.DONATION_ALERTS_TOKEN) {
+if (
+  process.env.DONATION_ALERTS_TOKEN &&
+  process.env.DONATION_ALERTS_EVENT_PRICE
+) {
+  const rawData = fs.readFileSync(process.env.DONATION_ALERTS_EVENT_PRICE);
+  const price = JSON.parse(rawData.toString());
   const alertsBot = new AlertsBot(
     processor,
     process.env.DONATION_ALERTS_TOKEN,
     refreshInterval,
+    price,
     debug
   );
   alertsBot.connect();

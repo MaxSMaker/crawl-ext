@@ -10,6 +10,7 @@ export class AlertsBot {
     private processor: IGameEvent,
     private token: string,
     private refreshInterval: number,
+    private price: Record<string, string>,
     private debug: boolean = false
   ) {}
 
@@ -30,21 +31,17 @@ export class AlertsBot {
           const id = row.getAttribute("data-alert_id");
 
           if (id && !this.processed[id]) {
-            const message = row.querySelector(".message-container");
-            if (message) {
-              const msg = message.textContent.trim();
-              this.processed[id] = msg;
+            const sum = row.querySelector("._sum");
+            if (sum) {
+              const text = sum.textContent.trim();
+              this.processed[id] = text;
+              const event = this.price[text];
+
               if (this.debug) {
-                this.processor.log(msg);
+                this.processor.log(`${text} - ${event}`);
               }
 
-              if (!msg.startsWith("!")) {
-                continue;
-              }
-
-              const event = msg.slice(1).split(" ", 1).shift();
-
-              if (!event || !this.regex.test(event)) {
+              if (!event) {
                 continue;
               }
 
