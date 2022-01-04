@@ -35,7 +35,7 @@ function ProcessExt()
     for key, value in pairs(events) do
         if processed[key] == nil then
             if EXT.effects[value] then
-                crawl.mpr("Incoming event:" .. value)
+                crawl.mpr("INCOMING EVENT: " .. value)
                 EXT.effects[value]()
                 crawl.more()
             end
