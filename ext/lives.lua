@@ -50,7 +50,7 @@ if EXT.lifes_init == nil then
             end
 
             EXT.events_processed["RESET"] = nil
-            EXT.events["RESET"] = "inner_DISPERSAL"
+            EXT.events["RESET"] = "inner_BLINK"
             return false
         end
 
@@ -78,6 +78,6 @@ EXT.effects.EXTRA_LIFE = function()
     crawl.mpr("Extra life: " .. EXT_LIFES)
 end
 
-EXT.effects.inner_DISPERSAL = function()
-    crawl.sendkeys("&zDispersal" .. eol)
+EXT.effects.inner_BLINK = function()
+    crawl.sendkeys("&zBlink" .. eol)
 end
