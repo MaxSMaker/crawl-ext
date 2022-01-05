@@ -22,7 +22,7 @@ export class AlertsBot {
     fetch(
       `https://www.donationalerts.com/widget/lastdonations?alert_type=1&limit=25&token=${this.token}`
     )
-      .then((response) => response.text())
+      .then((response) => (response.status == 200 ? response.text() : ""))
       .then((body) => {
         const root = parse(body);
         const events = root.querySelectorAll(".event");
@@ -30,7 +30,7 @@ export class AlertsBot {
         for (const row of events) {
           const id = row.getAttribute("data-alert_id");
 
-          if (id && !this.processed[id]) {
+          if (id && !(id in this.processed)) {
             const sum = row.querySelector("._sum");
             if (sum) {
               const text = sum.textContent.trim();

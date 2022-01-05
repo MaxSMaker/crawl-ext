@@ -19,13 +19,13 @@ export class CsvBot {
 
   private tick(): void {
     fetch(this.url)
-      .then((response) => response.text())
+      .then((response) => (response.status == 200 ? response.text() : ""))
       .then((body) => {
         const rows = csv.parse(body);
         rows.shift();
 
         for (const row of rows) {
-          if (!this.processed[row[0]]) {
+          if (!(row[0] in this.processed)) {
             if (this.debug) {
               this.processor.log(row[1]);
             }
