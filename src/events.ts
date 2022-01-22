@@ -65,7 +65,7 @@ export class GameEventProcessor implements IGameEvent {
 }
 
 export class RandomEventProcessorWrapper implements IGameEvent {
-  private events: Array<string> = [];
+  private events: Map<string, string> = new Map<string, string>();
   private voteRound = 0;
 
   constructor(private processor: IGameEvent, periodInMs: number) {
@@ -73,8 +73,10 @@ export class RandomEventProcessorWrapper implements IGameEvent {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  emit(type: string, _id?: string, _from?: string): void {
-    this.events.push(type);
+  emit(type: string, _id?: string, from?: string): void {
+    if (from) {
+      this.events.set(from, type);
+    }
   }
 
   log(msg: string): void {
@@ -82,15 +84,17 @@ export class RandomEventProcessorWrapper implements IGameEvent {
   }
 
   private tick() {
-    if (this.events.length == 0) {
+    if (this.events.size == 0) {
       return;
     }
 
     const copy = this.events;
-    this.events = [];
+    this.events = new Map<string, string>();
 
-    const index = Math.floor(Math.random() * copy.length);
-    const msg = copy[index];
-    this.processor.emit(msg, "V_" + this.voteRound++);
+    const index = Math.floor(Math.random() * copy.size);
+    const keys = Array.from<string>(copy.keys());
+    const key = keys[index];
+    const msg = copy.get(key);
+    this.processor.emit(msg + " - " + key, "V_" + this.voteRound++);
   }
 }

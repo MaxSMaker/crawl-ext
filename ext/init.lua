@@ -34,10 +34,12 @@ function ProcessExt()
 
     for key, value in pairs(events) do
         if processed[key] == nil then
-            if EXT.effects[value] then
+            local words = string.gmatch(value, "[^%s]+")
+            local event = words()
+            if EXT.effects[event] then
                 crawl.mpr("INCOMING EVENT: " .. value)
-                EXT.effects[value]()
                 crawl.more()
+                EXT.effects[event]()
             end
         end
     end
