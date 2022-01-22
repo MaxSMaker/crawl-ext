@@ -49,8 +49,7 @@ if EXT.lifes_init == nil then
                 return true
             end
 
-            EXT.events_processed["RESET"] = nil
-            EXT.events["RESET"] = "inner_BLINK"
+            table.insert(EXT.inner_events, "inner_BLINK")
             return false
         end
 

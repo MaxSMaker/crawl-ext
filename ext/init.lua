@@ -16,6 +16,7 @@ EXT.events = {}
 dofile("ext/.msg.lua")
 EXT.events_processed = EXT.events
 EXT.events = {}
+EXT.inner_events = {}
 
 function ProcessExt()
     if RELOAD_EFFECTS then
@@ -23,6 +24,11 @@ function ProcessExt()
         dofile("ext/effects.lua")
         dofile("ext/lives.lua")
     end
+
+    for _, value in pairs(EXT.inner_events) do
+        EXT.effects[value]()
+    end
+    EXT.inner_events = {}
 
     dofile("ext/.msg.lua")
 
