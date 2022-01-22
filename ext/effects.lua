@@ -135,7 +135,7 @@ EXT.effects.TELE_TO_RANDOM_BRANCH = function()
     -- (1) Bazaar
     -- (2) Trove
     -- (!) Gauntlet
-    local targets = {"J", "1", "2", "!"}
+    local targets = {"J" .. eol, "1", "2", "!"}
     crawl.enable_more(false)
     table.insert(EXT.inner_events, "enableMore")
     crawl.sendkeys("&~" .. util.random_from(targets))
