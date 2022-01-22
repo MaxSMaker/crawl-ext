@@ -48,7 +48,7 @@ export class GameEventProcessor implements IGameEvent {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private onMessage(body: string, id?: string, _from?: string) {
-    const msg = this.escape(body.toUpperCase());
+    const msg = this.escape(body);
     const index = this.escape(id || "ID_" + this.evIndex++);
 
     this.writer(`EXT.events["${index}"] = "${msg}"`);

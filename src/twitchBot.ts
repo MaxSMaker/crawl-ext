@@ -48,6 +48,10 @@ export class TwitchBot {
       return;
     }
 
-    this.processor.emit(event, userstate.id || "", userstate.username || "");
+    this.processor.emit(
+      event.toUpperCase(),
+      userstate.id || "",
+      userstate.username || ""
+    );
   }
 }
