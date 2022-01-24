@@ -4,3 +4,4 @@
 !.gitignore
 !.eslintrc.json
 !.env.example
+!.config.json.example

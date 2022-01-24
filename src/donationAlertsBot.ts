@@ -45,7 +45,7 @@ export class AlertsBot {
                 continue;
               }
 
-              this.processor.emit(event.toUpperCase(), id);
+              this.processor.emit(event, id);
             }
           }
         }

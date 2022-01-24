@@ -1,0 +1,8 @@
+{
+  "debugMsg": true,
+  "luaMsgPath": "ext/.msg.lua",
+  "donationAlertPriceList": {
+    "150 RUB": "MONEY"
+  },
+  "refreshInterval": 1000
+}
