@@ -33,6 +33,7 @@ if (process.env.TWITCH_CHANNEL) {
   const twitchBot = new TwitchBot(
     voteProcessor,
     process.env.TWITCH_CHANNEL,
+    config.twitchMessages,
     config.debugMsg
   );
   twitchBot.connect();
@@ -54,6 +55,7 @@ if (process.env.DONATION_ALERTS_TOKEN) {
     process.env.DONATION_ALERTS_TOKEN,
     refreshInterval,
     config.donationAlertPriceList,
+    config.donationAlertMessages,
     config.debugMsg
   );
   alertsBot.connect();

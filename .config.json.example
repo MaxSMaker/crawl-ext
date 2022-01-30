@@ -4,5 +4,11 @@
   "donationAlertPriceList": {
     "150 RUB": "MONEY"
   },
+  "donationAlertMessages": [
+    "MONEY"
+  ],
+  "twitchMessages": [
+    "MONEY"
+  ],
   "refreshInterval": 1000
 }

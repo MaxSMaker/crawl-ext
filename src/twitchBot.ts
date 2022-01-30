@@ -3,11 +3,13 @@ import { IGameEvent } from "./events.js";
 
 export class TwitchBot {
   private client: Client;
+  private events: Set<string>;
   private regex = /^[a-zA-Z_]+$/;
 
   constructor(
     private processor: IGameEvent,
     channel: string,
+    events: string[],
     private debug = false
   ) {
     this.client = new Client({ channels: [channel] });
@@ -22,6 +24,8 @@ export class TwitchBot {
         this.handler(channel, userstate, message, self);
       }
     );
+
+    this.events = new Set<string>(events);
   }
 
   connect(): void {
@@ -48,10 +52,11 @@ export class TwitchBot {
       return;
     }
 
-    this.processor.emit(
-      event.toUpperCase(),
-      userstate.id || "",
-      userstate.username || ""
-    );
+    const upEvent = event.toUpperCase();
+    if (!this.events.has(upEvent)) {
+      return;
+    }
+
+    this.processor.emit(upEvent, userstate.id || "", userstate.username || "");
   }
 }
