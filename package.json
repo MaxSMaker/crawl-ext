@@ -32,5 +32,18 @@
     "node-html-parser": "^5.1.0",
     "tmi.js": "^1.8.5"
   },
-  "type": "module"
+  "type": "module",
+  "jest": {
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
+    "globals": {
+      "ts-jest": {
+        "useESM": true
+      }
+    },
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    }
+  }
 }
