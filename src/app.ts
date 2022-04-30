@@ -1,14 +1,14 @@
 import { dotenv } from "./deps.ts";
 const env = await dotenv();
 
-import { IConfig } from "./src/config.ts";
+import { IConfig } from "./config.ts";
 import {
   GameEventProcessor,
   RandomEventProcessorWrapper,
-} from "./src/events.ts";
-import { TwitchBot } from "./src/twitchBot.ts";
-import { CsvBot } from "./src/cvsBot.ts";
-import { AlertsBot } from "./src/donationAlertsBot.ts";
+} from "./events.ts";
+import { TwitchBot } from "./twitchBot.ts";
+import { CsvBot } from "./cvsBot.ts";
+import { AlertsBot } from "./donationAlertsBot.ts";
 
 const processor = new GameEventProcessor();
 const config: IConfig = JSON.parse(

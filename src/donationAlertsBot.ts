@@ -1,5 +1,5 @@
 import { IGameEvent } from "./events.ts";
-import { delay, DOMParser, Element } from "../deps.ts";
+import { delay, DOMParser, Element } from "./deps.ts";
 
 const regex = /^[a-zA-Z_]+$/;
 

@@ -1,4 +1,4 @@
-import { IrcMessage, TwitchChat } from "../deps.ts";
+import { IrcMessage, TwitchChat } from "./deps.ts";
 import { IGameEvent } from "./events.ts";
 
 export class TwitchBot {

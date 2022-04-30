@@ -1,6 +1,6 @@
-import { CsvBot } from "../src/cvsBot.ts";
+import { CsvBot } from "./cvsBot.ts";
 import { EmitItem, MockProcessor } from "./mockProcessor.ts";
-import { assertEquals } from "../dev_deps.ts";
+import { assertEquals } from "./deps.test.ts";
 
 Deno.test("CSV parser test", async () => {
   const processor = new MockProcessor();

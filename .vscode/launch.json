@@ -8,7 +8,7 @@
       "request": "launch",
       "name": "Run Program",
       "type": "pwa-node",
-      "program": "${workspaceFolder}/app.ts",
+      "program": "${workspaceFolder}/src/app.ts",
       "cwd": "${workspaceFolder}",
       "runtimeExecutable": "deno",
       "runtimeArgs": ["run", "--inspect-brk", "--allow-all"],

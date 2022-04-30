@@ -1,7 +1,7 @@
-import { TwitchBot } from "../src/twitchBot.ts";
+import { TwitchBot } from "./twitchBot.ts";
 import { EmitItem, MockProcessor } from "./mockProcessor.ts";
-import { assertEquals } from "../dev_deps.ts";
-import { IrcMessage } from "../deps.ts";
+import { assertEquals } from "./deps.test.ts";
+import { IrcMessage } from "./deps.ts";
 
 class MockMsg {
   constructor(public message: string, public username: string) {

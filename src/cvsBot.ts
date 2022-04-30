@@ -1,4 +1,4 @@
-import { csv, delay } from "../deps.ts";
+import { csv, delay } from "./deps.ts";
 import { IGameEvent } from "./events.ts";
 
 export class CsvBot {

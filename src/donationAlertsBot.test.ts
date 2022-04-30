@@ -1,6 +1,6 @@
-import { AlertsBot } from "../src/donationAlertsBot.ts";
+import { AlertsBot } from "./donationAlertsBot.ts";
 import { EmitItem, MockProcessor } from "./mockProcessor.ts";
-import { assertEquals } from "../dev_deps.ts";
+import { assertEquals } from "./deps.test.ts";
 
 Deno.test("DA parser test", async () => {
   const processor = new MockProcessor();

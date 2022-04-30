@@ -1,4 +1,4 @@
-import { IGameEvent } from "../src/events.ts";
+import { IGameEvent } from "./events.ts";
 
 export class EmitItem {
   public type: string;
