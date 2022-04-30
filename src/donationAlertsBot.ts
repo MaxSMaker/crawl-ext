@@ -58,7 +58,7 @@ export class AlertsBot {
                 this.processor.log(JSON.stringify(event));
               }
 
-              if (this.events.has(event.event)) {
+              if (this.events.size > 0 && this.events.has(event.event)) {
                 this.processor.emit(event.event, id);
                 continue;
               }

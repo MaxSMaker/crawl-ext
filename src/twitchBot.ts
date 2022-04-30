@@ -27,6 +27,7 @@ export class TwitchBot {
       switch (ircMsg.command) {
         case "PRIVMSG":
           this.handler(ircMsg);
+          break;
       }
     }
   }
@@ -49,7 +50,7 @@ export class TwitchBot {
     }
 
     const upEvent = event.toUpperCase();
-    if (!this.events.has(upEvent)) {
+    if (this.events.size > 0 && !this.events.has(upEvent)) {
       return;
     }
 
