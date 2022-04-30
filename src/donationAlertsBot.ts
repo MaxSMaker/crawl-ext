@@ -1,6 +1,5 @@
-import { IGameEvent } from "./events.js";
-import fetch from "node-fetch";
-import { parse, HTMLElement } from "node-html-parser";
+import { IGameEvent } from "./events.ts";
+import { delay, DOMParser, Element } from "../deps.ts";
 
 const regex = /^[a-zA-Z_]+$/;
 
@@ -9,7 +8,7 @@ class Event {
     public id: string,
     public msg: string,
     public event: string,
-    public sum: string
+    public sum: string,
   ) {}
 }
 
@@ -23,62 +22,67 @@ export class AlertsBot {
     private refreshInterval: number,
     private price: Record<string, string>,
     events: string[],
-    private debug: boolean = false
+    private debug: boolean = false,
   ) {
     this.events = new Set<string>(events);
   }
 
-  connect(): void {
-    setTimeout(() => this.tick(), 0);
-  }
+  public async connect(): Promise<void> {
+    while (true) {
+      try {
+        const response = await fetch(
+          `https://www.donationalerts.com/widget/lastdonations?alert_type=1&limit=25&token=${this.token}`,
+        );
 
-  private tick(): void {
-    fetch(
-      `https://www.donationalerts.com/widget/lastdonations?alert_type=1&limit=25&token=${this.token}`
-    )
-      .then((response) => (response.status == 200 ? response.text() : ""))
-      .then((body) => {
-        const root = parse(body);
-        const events = root.querySelectorAll(".event");
+        if (response.status == 200) {
+          const body = await response.text();
 
-        for (const row of events) {
-          const id = row.getAttribute("data-alert_id");
+          const root = new DOMParser().parseFromString(body, "text/html");
+          if (!root) continue;
 
-          if (id && !(id in this.processed)) {
-            const event = this.parseRow(id, row);
+          const events = root.getElementsByClassName("event");
 
-            if (this.debug) {
-              this.processor.log(JSON.stringify(event));
-            }
+          for (const row of events) {
+            const id = row.getAttribute("data-alert_id");
 
-            if (!event) {
-              continue;
-            }
+            if (id && !(id in this.processed)) {
+              const event = this.parseRow(id, row);
 
-            if (this.events.has(event.event)) {
-              this.processor.emit(event.event, id);
-              continue;
-            }
+              if (!event) {
+                this.processed[id] = "?";
+                continue;
+              }
 
-            if (this.price[event.sum]) {
-              this.processor.emit(this.price[event.sum], id);
+              this.processed[id] = event.event;
+              if (this.debug) {
+                this.processor.log(JSON.stringify(event));
+              }
+
+              if (this.events.has(event.event)) {
+                this.processor.emit(event.event, id);
+                continue;
+              }
+
+              if (this.price[event.sum]) {
+                this.processor.emit(this.price[event.sum], id);
+              }
             }
           }
         }
-      })
-      .catch((err) => {
-        if (this.debug) {
-          console.log(err.name + ": " + err.message);
-        }
-      })
-      .finally(() => setTimeout(() => this.tick(), this.refreshInterval));
+
+        await delay(this.refreshInterval);
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
 
-  private parseRow(id: string, row: HTMLElement): Event | null {
+  private parseRow(id: string, row: Element): Event | null {
     const message = row.querySelector(".message-container");
 
-    const msg =
-      message && message.textContent ? message.textContent.trim() : "";
+    const msg = message && message.textContent
+      ? message.textContent.trim()
+      : "";
 
     const sum = row.querySelector("._sum");
     if (!sum || !sum.textContent) {

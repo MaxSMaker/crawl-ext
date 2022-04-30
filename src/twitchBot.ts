@@ -1,52 +1,48 @@
-import { Client, ChatUserstate } from "tmi.js";
-import { IGameEvent } from "./events.js";
+import { IrcMessage, TwitchChat } from "../deps.ts";
+import { IGameEvent } from "./events.ts";
 
 export class TwitchBot {
-  private client: Client;
+  private client: TwitchChat;
   private events: Set<string>;
   private regex = /^[a-zA-Z_]+$/;
 
-  constructor(
+  public constructor(
     private processor: IGameEvent,
-    channel: string,
+    private channel: string,
     events: string[],
-    private debug = false
+    private debug = false,
   ) {
-    this.client = new Client({ channels: [channel] });
-    this.client.on(
-      "message",
-      (
-        channel: string,
-        userstate: ChatUserstate,
-        message: string,
-        self: boolean
-      ) => {
-        this.handler(channel, userstate, message, self);
-      }
+    this.client = new TwitchChat(
+      "",
+      `justinfan${Math.floor(10000 + Math.random() * 10000)}`,
     );
-
     this.events = new Set<string>(events);
   }
 
-  connect(): void {
-    this.client.connect();
+  public async connect() {
+    await this.client.connect();
+    const channel = this.client.joinChannel(this.channel);
+
+    for await (const ircMsg of channel) {
+      switch (ircMsg.command) {
+        case "PRIVMSG":
+          this.handler(ircMsg);
+      }
+    }
   }
 
-  private handler(
-    _channel: string,
-    userstate: ChatUserstate,
-    message: string,
-    _self: boolean // eslint-disable-line @typescript-eslint/no-unused-vars
+  public handler(
+    ircMsg: IrcMessage,
   ) {
     if (this.debug) {
-      this.processor.log(`${userstate.username || "UNKNOWN"}: ${message}`);
+      this.processor.log(`${ircMsg.username || "UNKNOWN"}: ${ircMsg.message}`);
     }
 
-    if (!message.startsWith("!")) {
+    if (!ircMsg.message.startsWith("!")) {
       return;
     }
 
-    const event = message.slice(1).split(" ", 1).shift();
+    const event = ircMsg.message.slice(1).split(" ", 1).shift();
 
     if (!event || !this.regex.test(event)) {
       return;
@@ -57,6 +53,6 @@ export class TwitchBot {
       return;
     }
 
-    this.processor.emit(upEvent, userstate.id || "", userstate.username || "");
+    this.processor.emit(upEvent, "", ircMsg.username || "");
   }
 }

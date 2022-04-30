@@ -1,14 +1,5 @@
-import EventEmitter from "events";
-import TypedEmitter from "typed-emitter";
-import fs from "fs";
-
 export interface EventWriter {
   (msg: string): void;
-}
-
-interface MessageEvents {
-  message: (body: string, from: string) => void;
-  log: (msg: string) => void;
 }
 
 export interface IGameEvent {
@@ -18,43 +9,26 @@ export interface IGameEvent {
 
 export class GameEventProcessor implements IGameEvent {
   private evIndex = 0;
-  private messageEmitter = new EventEmitter() as TypedEmitter<MessageEvents>;
   private writer: EventWriter = (msg) => console.log(msg);
+  private encoder: TextEncoder = new TextEncoder();
 
-  constructor() {
-    this.messageEmitter.on(
-      "message",
-      (type: string, id?: string, from?: string) =>
-        this.onMessage(type, id, from)
-    );
-    this.messageEmitter.on("log", (msg: string) => this.onLog(msg));
-  }
-
-  setOutFile(fileName: string) {
-    fs.writeFileSync(fileName, ""); // Clear output file
+  public setOutFile(fileName: string) {
+    Deno.writeFileSync(fileName, new Uint8Array()); // Clear output file
     this.writer = (msg) => {
       console.log(msg);
-      fs.writeFileSync(fileName, msg + "\n", { flag: "a" });
+      const data = this.encoder.encode(msg + "\n");
+      Deno.writeFileSync(fileName, data, { append: true });
     };
   }
 
-  emit(type: string, from: string): void {
-    this.messageEmitter.emit("message", type, from);
-  }
-
-  log(msg: string): void {
-    this.messageEmitter.emit("log", msg);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private onMessage(body: string, id?: string, _from?: string) {
-    const msg = this.escape(body);
+  public emit(type: string, id: string): void {
+    const msg = this.escape(type);
     const index = this.escape(id || "ID_" + this.evIndex++);
 
     this.writer(`EXT.events["${index}"] = "${msg}"`);
   }
 
-  private onLog(msg: string) {
+  public log(msg: string): void {
     const value = this.escape(msg);
     this.writer(`-- ${this.escape(value)}`);
   }
@@ -68,18 +42,17 @@ export class RandomEventProcessorWrapper implements IGameEvent {
   private events: Map<string, string> = new Map<string, string>();
   private voteRound = 0;
 
-  constructor(private processor: IGameEvent, periodInMs: number) {
+  public constructor(private processor: IGameEvent, periodInMs: number) {
     setInterval(() => this.tick(), periodInMs);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  emit(type: string, _id?: string, from?: string): void {
+  public emit(type: string, _id?: string, from?: string): void {
     if (from) {
       this.events.set(from, type);
     }
   }
 
-  log(msg: string): void {
+  public log(msg: string): void {
     this.processor.log(msg);
   }
 

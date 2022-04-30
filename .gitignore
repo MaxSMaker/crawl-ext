@@ -1,6 +1,7 @@
 /out/
 /node_modules/
 .*
+!.vscode
 !.gitignore
 !.eslintrc.json
 !.env.example
