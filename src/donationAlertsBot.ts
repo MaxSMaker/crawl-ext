@@ -36,38 +36,7 @@ export class AlertsBot {
 
         if (response.status == 200) {
           const body = await response.text();
-
-          const root = new DOMParser().parseFromString(body, "text/html");
-          if (!root) continue;
-
-          const events = root.getElementsByClassName("event");
-
-          for (const row of events) {
-            const id = row.getAttribute("data-alert_id");
-
-            if (id && !(id in this.processed)) {
-              const event = this.parseRow(id, row);
-
-              if (!event) {
-                this.processed[id] = "?";
-                continue;
-              }
-
-              this.processed[id] = event.event;
-              if (this.debug) {
-                this.processor.log(JSON.stringify(event));
-              }
-
-              if (this.events.size > 0 && this.events.has(event.event)) {
-                this.processor.emit(event.event, id);
-                continue;
-              }
-
-              if (this.price[event.sum]) {
-                this.processor.emit(this.price[event.sum], id);
-              }
-            }
-          }
+          this.processHtml(body);
         }
 
         await delay(this.refreshInterval);
@@ -77,7 +46,43 @@ export class AlertsBot {
     }
   }
 
-  private parseRow(id: string, row: Element): Event | null {
+  public processHtml(body: string) {
+    const root = new DOMParser().parseFromString(body, "text/html");
+    if (!root) return;
+
+    const events = root.getElementsByClassName("event");
+
+    for (const row of events) {
+      const id = row.getAttribute("data-alert_id");
+
+      if (id && !(id in this.processed)) {
+        const event = this.parseRow(id, row);
+
+        if (!event) {
+          this.processed[id] = "?";
+          continue;
+        }
+
+        this.processed[id] = event.event;
+        if (this.debug) {
+          this.processor.log(JSON.stringify(event));
+        }
+
+        if (
+          event.event && (this.events.size == 0 || this.events.has(event.event))
+        ) {
+          this.processor.emit(event.event, id);
+          continue;
+        }
+
+        if (this.price[event.sum]) {
+          this.processor.emit(this.price[event.sum], id);
+        }
+      }
+    }
+  }
+
+  public parseRow(id: string, row: Element): Event | null {
     const message = row.querySelector(".message-container");
 
     const msg = message && message.textContent
@@ -91,7 +96,7 @@ export class AlertsBot {
     return new Event(id, msg, this.getEvent(msg), sum.textContent.trim());
   }
 
-  private getEvent(msg: string): string {
+  public getEvent(msg: string): string {
     if (!msg.startsWith("!")) {
       return "";
     }

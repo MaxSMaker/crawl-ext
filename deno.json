@@ -1,6 +1,8 @@
 {
   "tasks": {
     "start": "deno run --allow-net --allow-write --allow-read=. app.ts",
-    "compile": "deno compile --allow-net --allow-write --allow-read app.ts"
+    "compile": "deno compile --allow-net --allow-write --allow-read=. app.ts",
+    "coverage": "deno test --allow-all --coverage=.cov && deno coverage .cov --lcov --output=.cov/profile.lcov && genhtml -o .cov/html .cov/profile.lcov",
+    "test": "deno test --allow-all"
   }
 }

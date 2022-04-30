@@ -19,27 +19,29 @@ export class CsvBot {
 
         if (response.status == 200) {
           const body = await response.text();
-
-          const rows = await csv(body);
-          rows.shift();
-
-          for (const row of rows) {
-            if (!(row[0] in this.processed)) {
-              if (this.debug) {
-                this.processor.log(row[1]);
-              }
-              this.processed[row[0]] = row[1];
-              const event = row[1].split(" ", 1).shift();
-              if (event && this.regex.test(event)) {
-                this.processor.emit(event, row[0]);
-              }
-            }
-          }
+          this.processCSV(body);
         }
-
         await delay(this.refreshInterval);
       } catch (err) {
         console.log(err);
+      }
+    }
+  }
+
+  public async processCSV(body: string): Promise<void> {
+    const rows = await csv(body);
+    rows.shift();
+
+    for (const row of rows) {
+      if (!(row[0] in this.processed)) {
+        if (this.debug) {
+          this.processor.log(row[1]);
+        }
+        this.processed[row[0]] = row[1];
+        const event = row[1].split(" ", 1).shift();
+        if (event && this.regex.test(event)) {
+          this.processor.emit(event, row[0]);
+        }
       }
     }
   }
