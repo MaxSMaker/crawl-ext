@@ -20,14 +20,22 @@ export class TwitchBot {
   }
 
   public async connect() {
-    await this.client.connect();
-    const channel = this.client.joinChannel(this.channel);
+    while (true) {
+      try {
+        await this.client.connect();
+        const channel = this.client.joinChannel(this.channel);
 
-    for await (const ircMsg of channel) {
-      switch (ircMsg.command) {
-        case "PRIVMSG":
-          this.handler(ircMsg);
-          break;
+        for await (const ircMsg of channel) {
+          switch (ircMsg.command) {
+            case "PRIVMSG":
+              this.handler(ircMsg);
+              break;
+          }
+        }
+      } catch (err) {
+        if (this.debug) {
+          console.log(err);
+        }
       }
     }
   }

@@ -40,15 +40,31 @@ export class GameEventProcessor implements IGameEvent {
   }
 }
 
+export class RandomEventProcessorStatus {
+  public constructor(
+    public interval: number,
+    public begin: Date,
+    public event?: string,
+    public from?: string,
+  ) {}
+}
+
 export class RandomEventProcessorWrapper implements IGameEvent {
   private events: Map<string, string> = new Map<string, string>();
   private voteRound = 0;
+  private status: RandomEventProcessorStatus;
 
   public constructor(
     private processor: IGameEvent,
     private periodInMs: number,
   ) {
-    this.timer();
+    this.status = new RandomEventProcessorStatus(
+      this.periodInMs,
+      new Date(),
+      undefined,
+      undefined,
+    );
+    this.start();
   }
 
   public emit(type: string, _id?: string, from?: string): void {
@@ -61,10 +77,14 @@ export class RandomEventProcessorWrapper implements IGameEvent {
     this.processor.log(msg);
   }
 
-  private async timer() {
+  public getStatus(): RandomEventProcessorStatus {
+    return this.status;
+  }
+
+  private async start() {
     while (true) {
       try {
-        this.tick();
+        this.status = this.tick();
         await delay(this.periodInMs);
       } catch (ex) {
         console.log(ex);
@@ -72,9 +92,14 @@ export class RandomEventProcessorWrapper implements IGameEvent {
     }
   }
 
-  private tick() {
+  private tick(): RandomEventProcessorStatus {
     if (this.events.size == 0) {
-      return;
+      return new RandomEventProcessorStatus(
+        this.periodInMs,
+        new Date(),
+        undefined,
+        undefined,
+      );
     }
 
     const copy = this.events;
@@ -85,5 +110,11 @@ export class RandomEventProcessorWrapper implements IGameEvent {
     const key = keys[index];
     const msg = copy.get(key);
     this.processor.emit(msg + " - " + key, "V_" + this.voteRound++);
+    return new RandomEventProcessorStatus(
+      this.periodInMs,
+      new Date(),
+      msg,
+      key,
+    );
   }
 }

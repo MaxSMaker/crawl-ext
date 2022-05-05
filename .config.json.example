@@ -1,5 +1,5 @@
 {
-  "debugMsg": true,
+  "debug": true,
   "luaMsgPath": "ext/.msg.lua",
   "donationAlertPriceList": {
     "150 RUB": "MONEY"
@@ -10,5 +10,6 @@
   "twitchMessages": [
     "MONEY"
   ],
-  "refreshInterval": 1000
+  "refreshInterval": 1000,
+  "port": 8000
 }

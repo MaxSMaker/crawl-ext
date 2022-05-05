@@ -41,7 +41,9 @@ export class AlertsBot {
 
         await delay(this.refreshInterval);
       } catch (err) {
-        console.log(err);
+        if (this.debug) {
+          console.log(err);
+        }
       }
     }
   }
