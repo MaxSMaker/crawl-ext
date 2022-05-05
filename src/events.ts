@@ -1,3 +1,5 @@
+import { delay } from "./deps.ts";
+
 export interface EventWriter {
   (msg: string): void;
 }
@@ -42,8 +44,11 @@ export class RandomEventProcessorWrapper implements IGameEvent {
   private events: Map<string, string> = new Map<string, string>();
   private voteRound = 0;
 
-  public constructor(private processor: IGameEvent, periodInMs: number) {
-    setInterval(() => this.tick(), periodInMs);
+  public constructor(
+    private processor: IGameEvent,
+    private periodInMs: number,
+  ) {
+    this.timer();
   }
 
   public emit(type: string, _id?: string, from?: string): void {
@@ -54,6 +59,17 @@ export class RandomEventProcessorWrapper implements IGameEvent {
 
   public log(msg: string): void {
     this.processor.log(msg);
+  }
+
+  private async timer() {
+    while (true) {
+      try {
+        this.tick();
+        await delay(this.periodInMs);
+      } catch (ex) {
+        console.log(ex);
+      }
+    }
   }
 
   private tick() {
