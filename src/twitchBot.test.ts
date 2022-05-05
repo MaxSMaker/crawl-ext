@@ -34,7 +34,7 @@ Deno.test("Twitch msg parser test", () => {
   assertEquals(
     processor.emitted(),
     new Array<EmitItem>(
-      new EmitItem("HEAL", "", "user"),
+      new EmitItem("HEAL", "", "user", "!HEAL alive!"),
     ),
   );
 });
@@ -51,7 +51,7 @@ Deno.test("Twitch msg filter test", () => {
   assertEquals(
     processor.emitted(),
     new Array<EmitItem>(
-      new EmitItem("HEAL", "", "user"),
+      new EmitItem("HEAL", "", "user", "!HEAL alive!"),
     ),
   );
 });
@@ -66,7 +66,7 @@ Deno.test("Twitch msg doublesfilter test", () => {
   assertEquals(
     processor.emitted(),
     new Array<EmitItem>(
-      new EmitItem("HEAL", "", "user"),
+      new EmitItem("HEAL", "", "user", "!HEAL alive!"),
     ),
   );
 });

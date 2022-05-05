@@ -5,7 +5,7 @@ export interface EventWriter {
 }
 
 export interface IGameEvent {
-  emit(type: string, id?: string, from?: string): void;
+  emit(type: string, id?: string, from?: string, msg?: string): void;
   log(msg: string): void;
 }
 
@@ -44,13 +44,13 @@ export class RandomEventProcessorStatus {
   public constructor(
     public interval: number,
     public begin: Date,
-    public event?: string,
     public from?: string,
+    public msg?: string,
   ) {}
 }
 
 export class RandomEventProcessorWrapper implements IGameEvent {
-  private events: Map<string, string> = new Map<string, string>();
+  private events: Map<string, string[]> = new Map<string, string[]>();
   private voteRound = 0;
   private status: RandomEventProcessorStatus;
 
@@ -67,9 +67,9 @@ export class RandomEventProcessorWrapper implements IGameEvent {
     this.start();
   }
 
-  public emit(type: string, _id?: string, from?: string): void {
+  public emit(type: string, _id?: string, from?: string, msg?: string): void {
     if (from) {
-      this.events.set(from, type);
+      this.events.set(from, [type, msg || ""]);
     }
   }
 
@@ -103,18 +103,18 @@ export class RandomEventProcessorWrapper implements IGameEvent {
     }
 
     const copy = this.events;
-    this.events = new Map<string, string>();
+    this.events = new Map<string, string[]>();
 
     const index = Math.floor(Math.random() * copy.size);
     const keys = Array.from<string>(copy.keys());
     const key = keys[index];
-    const msg = copy.get(key);
-    this.processor.emit(msg + " - " + key, "V_" + this.voteRound++);
+    const [type, msg] = copy.get(key) || [];
+    this.processor.emit(type + " - " + key, "V_" + this.voteRound++);
     return new RandomEventProcessorStatus(
       this.periodInMs,
       new Date(),
-      msg,
       key,
+      msg || type,
     );
   }
 }

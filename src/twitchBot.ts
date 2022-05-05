@@ -78,6 +78,6 @@ export class TwitchBot {
       return;
     }
 
-    this.processor.emit(upEvent, "", ircMsg.username || "");
+    this.processor.emit(upEvent, "", ircMsg.username || "", ircMsg.message);
   }
 }
