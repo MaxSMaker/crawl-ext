@@ -1,8 +1,8 @@
-import { IrcMessage, TwitchChat } from "./deps.ts";
+import { delay, IrcMessage, TwitchChat } from "./deps.ts";
 import { IGameEvent } from "./events.ts";
 
 export class TwitchBot {
-  private client: TwitchChat;
+  private processed: Set<string> = new Set();
   private events: Set<string>;
   private regex = /^[a-zA-Z_]+$/;
 
@@ -12,26 +12,14 @@ export class TwitchBot {
     events: string[],
     private debug = false,
   ) {
-    this.client = new TwitchChat(
-      "",
-      `justinfan${Math.floor(10000 + Math.random() * 10000)}`,
-    );
     this.events = new Set<string>(events);
   }
 
   public async connect() {
     while (true) {
       try {
-        await this.client.connect();
-        const channel = this.client.joinChannel(this.channel);
-
-        for await (const ircMsg of channel) {
-          switch (ircMsg.command) {
-            case "PRIVMSG":
-              this.handler(ircMsg);
-              break;
-          }
-        }
+        this.newSession();
+        await delay(10000);
       } catch (err) {
         if (this.debug) {
           console.log(err);
@@ -40,9 +28,37 @@ export class TwitchBot {
     }
   }
 
+  private async newSession() {
+    try {
+      const client = new TwitchChat(
+        "",
+        `justinfan${Math.floor(10000 + Math.random() * 10000)}`,
+      );
+
+      await client.connect();
+
+      const channel = client.joinChannel(this.channel);
+      channel.addEventListener("privmsg", (ircMsg) => {
+        this.handler(ircMsg);
+      });
+
+      await delay(30000);
+      client.disconnect();
+    } catch (err) {
+      if (this.debug) {
+        console.log(err);
+      }
+    }
+  }
+
   public handler(
     ircMsg: IrcMessage,
   ) {
+    if (this.processed.has(ircMsg.tags.id)) {
+      return;
+    }
+    this.processed.add(ircMsg.tags.id);
+
     if (this.debug) {
       this.processor.log(`${ircMsg.username || "UNKNOWN"}: ${ircMsg.message}`);
     }
