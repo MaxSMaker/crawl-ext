@@ -37,6 +37,7 @@ function ProcessExt()
     dofile("ext/.msg.lua")
 
     crawl.enable_more(true)
+    crawl.setopt("channel.prompt = on")
     for key, value in pairs(EXT.events) do
         if EXT.events_processed[key] == nil then
             EXT.events_processed[key] = true
@@ -46,6 +47,7 @@ function ProcessExt()
                 crawl.mpr("INCOMING EVENT: " .. value)
                 crawl.more()
                 crawl.enable_more(false)
+                crawl.setopt("channel.prompt = mute")
                 EXT.effects[event]()
                 crawl.sendkeys("&" .. esc)
                 return

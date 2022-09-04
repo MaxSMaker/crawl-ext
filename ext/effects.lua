@@ -131,6 +131,11 @@ EXT.effects.BERSERK = function()
 end
 
 EXT.effects.TELE_TO_RANDOM_BRANCH = function()
+    crawl.setopt("channel.plain = mute")
+    EXT.next_hook = function()
+        crawl.setopt("channel.plain = on")
+    end
+
     -- (J) Abyss
     -- (1) Bazaar
     -- (2) Trove
