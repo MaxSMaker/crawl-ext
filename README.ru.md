@@ -42,7 +42,7 @@ Stone Soup.
 - BLINK_MONSTERS_CLOSE - блинк монстров поближе к игроку
 - MARK - наложить на персонажа временный статус MARK
 - BERSERK - наложить на персонажа временный статус BERSERK
-- TELE_TO_RANDOM_BRANCH - отправит в рандомное место (Abyss/ Bazaar / Trove /
+- TELE_TO_RANDOM_BRANCH - отправить в рандомное место (Abyss/ Bazaar / Trove /
   Gauntlet).
 
 ## Отключенные Эффекты

@@ -136,13 +136,7 @@ EXT.effects.TELE_TO_RANDOM_BRANCH = function()
     -- (2) Trove
     -- (!) Gauntlet
     local targets = {"J" .. eol, "1", "2", "!"}
-    crawl.enable_more(false)
-    table.insert(EXT.inner_events, "enableMore")
     crawl.sendkeys("&~" .. util.random_from(targets))
-end
-
-EXT.effects.enableMore = function()
-    crawl.enable_more(true)
 end
 
 -- EXT.effects.DOUBLE_SCROLLS = function()

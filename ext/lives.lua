@@ -49,7 +49,9 @@ if EXT.lifes_init == nil then
                 return true
             end
 
-            table.insert(EXT.inner_events, "inner_BLINK")
+            EXT.next_hook = function()
+                crawl.sendkeys("&zBlink" .. eol)
+            end
             return false
         end
 
@@ -75,8 +77,4 @@ end
 EXT.effects.EXTRA_LIFE = function()
     EXT_LIFES = EXT_LIFES + 1
     crawl.mpr("Extra life: " .. EXT_LIFES)
-end
-
-EXT.effects.inner_BLINK = function()
-    crawl.sendkeys("&zBlink" .. eol)
 end

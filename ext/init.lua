@@ -25,27 +25,30 @@ function ProcessExt()
         dofile("ext/lives.lua")
     end
 
-    for _, value in pairs(EXT.inner_events) do
-        EXT.effects[value]()
+    if EXT.next_hook then
+        local hook = EXT.next_hook
+        EXT.next_hook = nil
+        hook()
+        crawl.sendkeys("&" .. esc)
+        return
     end
-    EXT.inner_events = {}
-
-    dofile("ext/.msg.lua")
-
-    local events = EXT.events
-    local processed = EXT.events_processed
 
     EXT.events = {}
-    EXT.events_processed = events
+    dofile("ext/.msg.lua")
 
-    for key, value in pairs(events) do
-        if processed[key] == nil then
+    crawl.enable_more(true)
+    for key, value in pairs(EXT.events) do
+        if EXT.events_processed[key] == nil then
+            EXT.events_processed[key] = true
             local words = string.gmatch(value, "[^%s]+")
             local event = words()
             if EXT.effects[event] then
                 crawl.mpr("INCOMING EVENT: " .. value)
                 crawl.more()
+                crawl.enable_more(false)
                 EXT.effects[event]()
+                crawl.sendkeys("&" .. esc)
+                return
             end
         end
     end
